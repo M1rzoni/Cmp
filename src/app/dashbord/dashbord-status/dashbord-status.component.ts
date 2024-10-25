@@ -10,7 +10,9 @@ import { Component, Input } from '@angular/core';
 export class DashbordStatusComponent {
   currentStatus: 'online' | 'offline' | 'unknown' = 'offline';
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit() {
     setInterval(() => {
       const random = Math.random(); // 0-0.9999
 
