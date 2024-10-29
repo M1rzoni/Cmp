@@ -1,4 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  inject,
+  DestroyRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-dashbord-status',
@@ -7,13 +14,15 @@ import { Component, Input } from '@angular/core';
   templateUrl: './dashbord-status.component.html',
   styleUrl: './dashbord-status.component.css',
 })
-export class DashbordStatusComponent {
+export class DashbordStatusComponent implements OnInit {
   currentStatus: 'online' | 'offline' | 'unknown' = 'offline';
+
+  private destroyRef = inject(DestroyRef);
 
   constructor() {}
 
   ngOnInit() {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const random = Math.random(); // 0-0.9999
 
       if (random < 0.5) {
@@ -24,5 +33,13 @@ export class DashbordStatusComponent {
         this.currentStatus = 'unknown';
       }
     }, 5000);
+
+    this.destroyRef.onDestroy(() => {
+      clearInterval(interval);
+    });
   }
+
+  // ngOnDestroy(): void {
+  //   clearTimeout(this.interval);
+  // }
 }
